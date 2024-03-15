@@ -6,9 +6,6 @@ from sendgrid.helpers.mail import *
 SENDGRID_API_KEY = config.get("SENDGRID_API_KEY")
 SENDGRID_FROM_EMAIL = config.get("SENDGRID_FROM_EMAIL")
 
-print(SENDGRID_API_KEY, type(SENDGRID_API_KEY))
-print(SENDGRID_FROM_EMAIL, type(SENDGRID_FROM_EMAIL))
-
 subscriber_email = "agusngarci@gmail.com"
 
 
