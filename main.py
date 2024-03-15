@@ -1,5 +1,5 @@
 from mail import send_mail
-from supervisor import is_lol_runing
+from monitoring import is_lol_runing
 import config
 
 DEFAULT_MAIL_SENDER = config.get("DEFAULT_MAIL_SENDER")
