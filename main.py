@@ -8,6 +8,8 @@ import config
 
 from userdata import get_user_data, set_user_data
 
+import project_resource
+
 DEFAULT_MAIL_SENDER = config.get("DEFAULT_MAIL_SENDER")
 
 
@@ -66,7 +68,10 @@ def run_main_window():
 
 
 def run_system_tray():
-    tray = sg.SystemTray(menu=["", ["Open", "Exit"]], filename="rat.png")
+    tray = sg.SystemTray(
+        menu=["", ["Open", "Exit"]],
+        filename=project_resource.get_path("rat.ico"),
+    )
 
     while True:
         menu_item = tray.read()
