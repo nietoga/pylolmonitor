@@ -21,7 +21,11 @@ def monitor_user():
                 get_user_data("name") + " is running LoL or trying to install it.",
             )
 
-        sleep(5)
+            time_to_wait_after_mail = 2 * 60 * 60  # 2 hours
+            sleep(time_to_wait_after_mail)
+        else:
+            time_to_wait_to_check_again = 5 * 60  # 5 minutes
+            sleep(time_to_wait_to_check_again)
 
 
 def run_main_window():
