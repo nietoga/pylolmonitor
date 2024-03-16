@@ -14,15 +14,25 @@ DEFAULT_MAIL_SENDER = config.get("DEFAULT_MAIL_SENDER")
 def monitor_user():
     while True:
         if is_lol_runing():
-            send_mail(
-                DEFAULT_MAIL_SENDER,
-                get_user_data("subscriber_email"),
-                "LoL Monitor Warning",
-                get_user_data("name") + " is running LoL or trying to install it.",
-            )
+            subscriber_email = get_user_data("subscriber_email")
+            name = get_user_data("name", "Someone")
+            email_sent = False
 
-            time_to_wait_after_mail = 2 * 60 * 60  # 2 hours
-            sleep(time_to_wait_after_mail)
+            if subscriber_email:
+                email_sent = send_mail(
+                    DEFAULT_MAIL_SENDER,
+                    subscriber_email,
+                    "LoL Monitor Warning",
+                    name + " is running LoL or trying to install it.",
+                )
+
+            if email_sent:
+                time_to_wait_after_mail_success = 2 * 60 * 60  # 2 hours
+                sleep(time_to_wait_after_mail_success)
+            else:
+                print("Couldn't send email.")
+                time_to_wait_after_mail_failure = 10 * 60  # 10 minutes
+                sleep(time_to_wait_after_mail_failure)
         else:
             time_to_wait_to_check_again = 5 * 60  # 5 minutes
             sleep(time_to_wait_to_check_again)
