@@ -23,14 +23,14 @@ def monitor_user():
 
 
 def run_main_window():
-    layout = [[sg.Text("Settings")], [sg.Button("Save"), sg.Button("Exit")]]
+    layout = [[sg.Text("Settings")], [sg.Button("Save"), sg.Button("Close")]]
 
     window = sg.Window("LoL Notifier", layout)
 
     while True:
         event, _ = window.read()
 
-        if event in [sg.WINDOW_CLOSED, "Exit"]:
+        if event in [sg.WINDOW_CLOSED, "Close"]:
             break
 
     window.close()
