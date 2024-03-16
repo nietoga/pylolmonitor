@@ -6,6 +6,8 @@ from mail import send_mail
 from monitoring import is_lol_runing
 import config
 
+from userdata import get_user_data, set_user_data
+
 DEFAULT_MAIL_SENDER = config.get("DEFAULT_MAIL_SENDER")
 
 
@@ -14,23 +16,34 @@ def monitor_user():
         if is_lol_runing():
             send_mail(
                 DEFAULT_MAIL_SENDER,
-                "agusngarci@gmail.com",
-                "LoL Warning",
-                "This motherfucker is trying to install LoL",
+                get_user_data("subscriber_email"),
+                "LoL Monitor Warning",
+                get_user_data("name") + " is running LoL or trying to install it.",
             )
 
         sleep(5)
 
 
 def run_main_window():
-    layout = [[sg.Text("Settings")], [sg.Button("Save"), sg.Button("Close")]]
+    layout = [
+        [sg.Text("Settings")],
+        [sg.Text("Your Name"), sg.InputText(get_user_data("name"), key="-NAME-")],
+        [
+            sg.Text("Subscriber Email"),
+            sg.InputText(get_user_data("subscriber_email"), key="-SUBSCRIBER_EMAIL-"),
+        ],
+        [sg.Button("Save"), sg.Button("Close")],
+    ]
 
-    window = sg.Window("LoL Notifier", layout)
+    window = sg.Window("LoL Monitor", layout)
 
     while True:
-        event, _ = window.read()
+        event, values = window.read()
 
-        if event in [sg.WINDOW_CLOSED, "Close"]:
+        if event == "Save":
+            set_user_data("name", values["-NAME-"])
+            set_user_data("subscriber_email", values["-SUBSCRIBER_EMAIL-"])
+        elif event in [sg.WINDOW_CLOSED, "Close"]:
             break
 
     window.close()
@@ -38,7 +51,6 @@ def run_main_window():
 
 def run_system_tray():
     tray = sg.SystemTray(menu=["", ["Open", "Exit"]], filename="rat.png")
-    tray.ShowMessage("LoL Notifier", "We're up and running! Don't mess it up")
 
     while True:
         menu_item = tray.read()
