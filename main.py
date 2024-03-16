@@ -31,10 +31,12 @@ def monitor_user():
 def run_main_window():
     layout = [
         [sg.Text("Settings")],
-        [sg.Text("Your Name"), sg.InputText(get_user_data("name"), key="-NAME-")],
+        [sg.Text("Your Name"), sg.InputText(get_user_data("name", ""), key="-NAME-")],
         [
             sg.Text("Subscriber Email"),
-            sg.InputText(get_user_data("subscriber_email"), key="-SUBSCRIBER_EMAIL-"),
+            sg.InputText(
+                get_user_data("subscriber_email", ""), key="-SUBSCRIBER_EMAIL-"
+            ),
         ],
         [sg.Button("Save"), sg.Button("Close")],
     ]
