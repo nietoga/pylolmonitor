@@ -53,7 +53,12 @@ def run_main_window():
         [sg.Button("Save"), sg.Button("Close")],
     ]
 
-    window = sg.Window("LoL Monitor", layout)
+    window = sg.Window(
+        "LoL Monitor",
+        layout,
+        size=(300, 1),
+        icon=project_resource.get_path("rat.ico"),
+    )
 
     while True:
         event, values = window.read()
