@@ -2,13 +2,18 @@ import threading
 from time import sleep
 import PySimpleGUIQt as sg
 
-from mail import send_mail
 from monitoring import is_lol_runing
 import config
 
 from userdata import get_user_data, set_user_data
 
 import project_resource
+
+from external_services import ExternalServices
+import external_services.configuration as external_services_config
+
+external_services_config.configure()
+mail_service = ExternalServices.mail_service
 
 DEFAULT_MAIL_SENDER = config.get("DEFAULT_MAIL_SENDER")
 
@@ -21,7 +26,7 @@ def monitor_user():
             email_sent = False
 
             if subscriber_email:
-                email_sent = send_mail(
+                email_sent = mail_service.send_mail(
                     DEFAULT_MAIL_SENDER,
                     subscriber_email,
                     "LoL Monitor Warning",
