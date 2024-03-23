@@ -5,7 +5,7 @@ import PySimpleGUIQt as sg
 from monitoring import is_lol_runing
 import config
 
-import project_resource
+import file_utils
 
 from external_services import ExternalServices
 import external_services.configuration as external_services_config
@@ -65,7 +65,7 @@ def run_main_window():
         "LoL Monitor",
         layout,
         size=(300, 1),
-        icon=project_resource.get_path("rat.ico"),
+        icon=file_utils.get_absolute_path("rat.ico"),
     )
 
     while True:
@@ -83,7 +83,7 @@ def run_main_window():
 def run_system_tray():
     tray = sg.SystemTray(
         menu=["", ["Open", "Exit"]],
-        filename=project_resource.get_path("rat.ico"),
+        filename=file_utils.get_absolute_path("rat.ico"),
     )
 
     while True:
