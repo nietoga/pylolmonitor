@@ -5,8 +5,6 @@ import PySimpleGUIQt as sg
 from monitoring import is_lol_runing
 import config
 
-from user_data import get_user_data, set_user_data
-
 import project_resource
 
 from external_services import ExternalServices
@@ -14,6 +12,7 @@ import external_services.configuration as external_services_config
 
 external_services_config.configure()
 mail_service = ExternalServices.mail_service
+user_data = ExternalServices.user_data_provider
 
 DEFAULT_MAIL_SENDER = config.get("DEFAULT_MAIL_SENDER")
 
@@ -21,8 +20,8 @@ DEFAULT_MAIL_SENDER = config.get("DEFAULT_MAIL_SENDER")
 def monitor_user():
     while True:
         if is_lol_runing():
-            subscriber_email = get_user_data("subscriber_email")
-            name = get_user_data("name", "Someone")
+            subscriber_email = user_data.get_user_data("subscriber_email")
+            name = user_data.get_user_data("name", "Someone")
             email_sent = False
 
             if subscriber_email:
@@ -48,11 +47,15 @@ def monitor_user():
 def run_main_window():
     layout = [
         [sg.Text("Settings")],
-        [sg.Text("Your Name"), sg.InputText(get_user_data("name", ""), key="-NAME-")],
+        [
+            sg.Text("Your Name"),
+            sg.InputText(user_data.get_user_data("name", ""), key="-NAME-"),
+        ],
         [
             sg.Text("Subscriber Email"),
             sg.InputText(
-                get_user_data("subscriber_email", ""), key="-SUBSCRIBER_EMAIL-"
+                user_data.get_user_data("subscriber_email", ""),
+                key="-SUBSCRIBER_EMAIL-",
             ),
         ],
         [sg.Button("Save"), sg.Button("Close")],
@@ -69,8 +72,8 @@ def run_main_window():
         event, values = window.read()
 
         if event == "Save":
-            set_user_data("name", values["-NAME-"])
-            set_user_data("subscriber_email", values["-SUBSCRIBER_EMAIL-"])
+            user_data.set_user_data("name", values["-NAME-"])
+            user_data.set_user_data("subscriber_email", values["-SUBSCRIBER_EMAIL-"])
         elif event in [sg.WINDOW_CLOSED, "Close"]:
             break
 

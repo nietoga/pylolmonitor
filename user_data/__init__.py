@@ -1,9 +1,11 @@
-import PySimpleGUIQt as sg
+from abc import ABC, abstractmethod
 
 
-def set_user_data(key: str, value: str) -> None:
-    sg.user_settings_set_entry(key, value)
+class UserDataProvider(ABC):
+    @abstractmethod
+    def set_user_data(self, key: str, value: str) -> None:
+        pass
 
-
-def get_user_data(key: str, default: str | None = None) -> str | None:
-    return sg.user_settings_get_entry(key, default)
+    @abstractmethod
+    def get_user_data(self, key: str, default: str | None = None) -> str | None:
+        pass
