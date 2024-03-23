@@ -5,7 +5,7 @@ import PySimpleGUIQt as sg
 from monitoring import is_lol_runing
 import config
 
-from userdata import get_user_data, set_user_data
+from user_data import get_user_data, set_user_data
 
 import project_resource
 
