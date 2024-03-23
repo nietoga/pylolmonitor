@@ -87,7 +87,7 @@ def run_system_tray():
     )
 
     while True:
-        menu_item = tray.read()
+        menu_item = tray.read(0)
 
         if menu_item == "Exit":
             break
@@ -99,7 +99,20 @@ def run_system_tray():
     tray.close()
 
 
-if __name__ == "__main__":
+def exit_application(signum, frame):
+    exit()
+
+
+def main():
+    import signal
+
+    signal.signal(signal.SIGINT, exit_application)
+    signal.signal(signal.SIGTERM, exit_application)
+
     lol_monitor_thread = threading.Thread(target=monitor_user, daemon=True)
     lol_monitor_thread.start()
     run_system_tray()
+
+
+if __name__ == "__main__":
+    main()
