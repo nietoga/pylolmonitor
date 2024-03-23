@@ -3,4 +3,3 @@ psutil == 5.9.8
 PySide6 == 6.6.2
 PySimpleGUIQt == 5.0.0
 python-dotenv == 1.0.1
-sendgrid == 6.11.0
