@@ -11,4 +11,4 @@ class MailService(ABC):
         text_part: str,
         html_part: str | None = None,
     ) -> bool:
-        return False
+        pass
