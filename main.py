@@ -13,6 +13,7 @@ import external_services.configuration as external_services_config
 external_services_config.configure()
 mail_service = ExternalServices.mail_service
 user_data = ExternalServices.user_data_provider
+Tray = ExternalServices.Tray
 
 DEFAULT_MAIL_SENDER = config.get("DEFAULT_MAIL_SENDER")
 
@@ -81,22 +82,19 @@ def run_main_window():
 
 
 def run_system_tray():
-    tray = sg.SystemTray(
-        menu=["", ["Open", "Exit"]],
-        filename=file_utils.get_absolute_path("rat.ico"),
-    )
+    def close_tray(tray: Tray):
+        tray.close()
 
-    while True:
-        menu_item = tray.read(0)
+    def open_window(tray: Tray):
+        tray.set_visible(False)
+        run_main_window()
+        tray.set_visible(True)
 
-        if menu_item == "Exit":
-            break
-        elif menu_item in [sg.EVENT_SYSTEM_TRAY_ICON_DOUBLE_CLICKED, "Open"]:
-            tray.hide()
-            run_main_window()
-            tray.un_hide()
-
-    tray.close()
+    tray = Tray(file_utils.get_absolute_path("rat.ico"), ["Open", "Exit"])
+    tray.attach_listener("Exit", close_tray)
+    tray.attach_listener("Open", open_window)
+    tray.attach_listener(Tray.DOUBLE_CLICK_EVENT, open_window)
+    tray.run()
 
 
 def exit_application(signum, frame):
