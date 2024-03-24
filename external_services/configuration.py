@@ -13,6 +13,13 @@ def _configure_user_data():
     ExternalServices.user_data_provider = user_data_provider
 
 
+def _configure_tray_class():
+    from .tray import TrayClass
+
+    ExternalServices.Tray = TrayClass
+
+
 def configure():
     _configure_mail()
     _configure_user_data()
+    _configure_tray_class()
