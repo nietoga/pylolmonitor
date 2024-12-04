@@ -59,7 +59,7 @@ def run_main_window():
                 key="-SUBSCRIBER_EMAIL-",
             ),
         ],
-        [sg.Button("Save"), sg.Button("Close")],
+        [sg.Button("Save"), sg.Button("Hide")],
     ]
 
     window = sg.Window(
@@ -75,7 +75,7 @@ def run_main_window():
         if event == "Save":
             user_data.set_user_data("name", values["-NAME-"])
             user_data.set_user_data("subscriber_email", values["-SUBSCRIBER_EMAIL-"])
-        elif event in [sg.WINDOW_CLOSED, "Close"]:
+        elif event in [sg.WINDOW_CLOSED, "Hide"]:
             break
 
     window.close()
