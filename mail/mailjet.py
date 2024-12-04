@@ -1,34 +1,38 @@
 from mailjet_rest import Client
-import config
 
-MAILJET_API_KEY = config.get("MAILJET_API_KEY")
-MAILJET_API_SECRET = config.get("MAILJET_API_SECRET")
-
-mailjet = Client(auth=(MAILJET_API_KEY, MAILJET_API_SECRET), version="v3.1")
+from mail import MailService
 
 
-def send_mail(
-    email_from: str,
-    email_to: str,
-    subject: str,
-    text_part: str,
-    html_part: str | None = None,
-) -> bool:
-    data = {
-        "Messages": [
-            {
-                "From": {"Email": email_from},
-                "To": [{"Email": email_to}],
-                "Subject": subject,
-                "TextPart": text_part,
-                "HTMLPart": html_part,
-            }
-        ]
-    }
+class MailJetService(MailService):
+    def __init__(self, api_key: str, api_secret: str, debug: bool = False) -> None:
+        super().__init__()
+        self._mailjet_client = Client(auth=(api_key, api_secret), version="v3.1")
+        self._debug = debug
 
-    response = mailjet.send.create(data=data)
+    def send_mail(
+        self,
+        email_from: str,
+        email_to: str,
+        subject: str,
+        text_part: str,
+        html_part: str | None = None,
+    ) -> bool:
+        data = {
+            "Messages": [
+                {
+                    "From": {"Email": email_from},
+                    "To": [{"Email": email_to}],
+                    "Subject": subject,
+                    "TextPart": text_part,
+                    "HTMLPart": html_part,
+                }
+            ]
+        }
 
-    print(response.status_code)
-    print(response.json())
+        response = self._mailjet_client.send.create(data=data)
 
-    return response.ok
+        if self._debug:
+            print(response.status_code)
+            print(response.json())
+
+        return response.ok

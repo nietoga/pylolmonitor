@@ -1,7 +1,7 @@
 from dotenv import dotenv_values
-import project_resource
+import file_utils
 
-_config = dotenv_values(project_resource.get_path(".env"))
+_config = dotenv_values(file_utils.get_absolute_path(".env"))
 
 
 def get(key: str) -> str | None:
